@@ -6,12 +6,12 @@ import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
-const Landing = lazy(() => import('@/pages/Landing'));
-const Login = lazy(() => import('@/pages/Login'));
+const Landing = lazy(() => import('@/pages/landing'));
+const Login = lazy(() => import('@/pages/login'));
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
 const FoodDatabase = lazy(() => import('@/pages/FoodDatabase'));
-const History = lazy(() => import('@/pages/History'));
-const Settings = lazy(() => import('@/pages/Settings'));
+const History = lazy(() => import('@/pages/history'));
+const Settings = lazy(() => import('@/pages/settings'));
 
 function LoadingFallback() {
   return (
