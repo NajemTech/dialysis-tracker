@@ -7,6 +7,7 @@ export type TranslationKey = {
     settings: string;
     login: string;
     logout: string;
+    footer: string;
   };
   landing: {
     heroTitle: string;
@@ -139,6 +140,7 @@ export const translations: Record<'en' | 'ar', TranslationKey> = {
       settings: 'Settings',
       login: 'Login',
       logout: 'Logout',
+      footer: "Footer"
     },
     landing: {
       heroTitle: 'Take Control of Your Dialysis Diet',
@@ -269,6 +271,7 @@ export const translations: Record<'en' | 'ar', TranslationKey> = {
       settings: 'الإعدادات',
       login: 'تسجيل الدخول',
       logout: 'تسجيل الخروج',
+      footer: "التذييل",
     },
     landing: {
       heroTitle: 'تحكم في نظامك الغذائي للغسيل الكلوي',
