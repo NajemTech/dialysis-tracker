@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useTracking } from '@/hooks/useTracking';
 import { useReminders } from '@/hooks/useReminders';
-import { updateNutrientLimits } from '@/lib/supabase';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -24,7 +23,7 @@ const REMINDER_ICONS: Record<string, typeof Pill> = {
 
 export default function Settings() {
   const { lang, t, setLanguage } = useLanguage();
-  const { profile, updateProfile, getLimits, loading } = useTracking();
+  const { profile, updateProfile, getLimits } = useTracking();
   const { reminders, addReminder, removeReminder, toggleReminder } = useReminders();
   const { toast } = useToast();
 
@@ -208,6 +207,7 @@ export default function Settings() {
                         value={newReminder.type}
                         onChange={e => setNewReminder(p => ({ ...p, type: e.target.value as any }))}
                         className="h-8 w-full rounded-md border border-input bg-background px-2 text-sm"
+                        title={t.settings.reminderType}
                       >
                         {reminderTypes.map(rt => (
                           <option key={rt.value} value={rt.value}>{rt.label}</option>
@@ -229,7 +229,7 @@ export default function Settings() {
                       {t.settings.addReminder}
                     </Button>
                     <Button size="sm" variant="ghost" onClick={() => setShowAddReminder(false)} className="h-7 text-xs">
-                      {t.common.cancel}
+                       Cancel
                     </Button>
                   </div>
                 </div>
@@ -238,8 +238,8 @@ export default function Settings() {
               {reminders.length === 0 ? (
                 <div className="py-8 text-center">
                   <Bell className="mx-auto mb-3 size-8 text-muted-foreground/30" />
-                  <p className="text-sm text-muted-foreground">{t.settings.noReminders}</p>
-                  <p className="mt-1 text-xs text-muted-foreground/70">{t.settings.noRemindersDesc}</p>
+                  <p className="text-sm text-muted-foreground">Cancel</p>
+                  <p className="mt-1 text-xs text-muted-foreground/70">Cancel</p>
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -260,10 +260,10 @@ export default function Settings() {
                         />
                         <Button
                           variant="ghost"
-                          size="icon"
+                          size="sm"
                           className="size-7 text-muted-foreground hover:text-destructive"
                           onClick={() => removeReminder(r.id)}
-                          aria-label={t.common.delete}
+                          aria-label="no data"
                         >
                           <Trash2 className="size-3.5" />
                         </Button>
@@ -284,12 +284,12 @@ export default function Settings() {
                 {t.settings.aboutText}
               </p>
               <div className="rounded-xl bg-primary/5 p-4">
-                <p className="text-sm font-medium text-foreground">{t.settings.credits}</p>
+                <p className="text-sm font-medium text-foreground">{'Credits'}</p>
                 <p className="mt-1 text-xs text-muted-foreground">
                   {t.landing.acknowledgmentText}
                 </p>
                 <p className="mt-2 text-xs text-muted-foreground">
-                  {t.footer.designed}
+                  {t.nav.footer}
                 </p>
               </div>
             </div>
