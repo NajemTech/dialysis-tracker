@@ -133,7 +133,7 @@ export default function Dashboard() {
                       </div>
                       <Button
                         variant="ghost"
-                        size="icon"
+                        size="sm"
                         className="size-8 text-muted-foreground hover:text-destructive"
                         onClick={() => removeFood(item.id)}
                         aria-label={t.dashboard.remove}
