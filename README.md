@@ -139,6 +139,38 @@ create table food_logs (
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
+-- Water logs table
+create table water_logs (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references profiles(id) not null,
+  date date not null,
+  amount_ml integer not null,
+  logged_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- Daily notes table
+create table daily_notes (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references profiles(id) not null,
+  date date not null,
+  notes text not null default '',
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  unique(user_id, date)
+);
+
+-- Symptom logs table
+create table symptom_logs (
+  id uuid primary key default uuid_generate_v4(),
+  user_id uuid references profiles(id) not null,
+  date date not null,
+  symptom_type text not null,
+  severity integer not null,
+  logged_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
 -- Reminders table
 create table reminders (
   id uuid primary key default uuid_generate_v4(),
@@ -156,6 +188,9 @@ create table reminders (
 alter table profiles enable row level security;
 alter table nutrient_limits enable row level security;
 alter table food_logs enable row level security;
+alter table water_logs enable row level security;
+alter table daily_notes enable row level security;
+alter table symptom_logs enable row level security;
 alter table reminders enable row level security;
 
 -- Policies
@@ -182,6 +217,27 @@ create policy "Users can insert own food logs" on food_logs
 
 create policy "Users can delete own food logs" on food_logs
   for delete using (auth.uid() = user_id);
+
+create policy "Users can view own water logs" on water_logs
+  for select using (auth.uid() = user_id);
+
+create policy "Users can insert own water logs" on water_logs
+  for insert with check (auth.uid() = user_id);
+
+create policy "Users can view own daily notes" on daily_notes
+  for select using (auth.uid() = user_id);
+
+create policy "Users can insert own daily notes" on daily_notes
+  for insert with check (auth.uid() = user_id);
+
+create policy "Users can update own daily notes" on daily_notes
+  for update using (auth.uid() = user_id);
+
+create policy "Users can view own symptom logs" on symptom_logs
+  for select using (auth.uid() = user_id);
+
+create policy "Users can insert own symptom logs" on symptom_logs
+  for insert with check (auth.uid() = user_id);
 
 create policy "Users can view own reminders" on reminders
   for select using (auth.uid() = user_id);

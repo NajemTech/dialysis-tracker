@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useTracking } from '@/hooks/useTracking';
 import type { FoodItem } from '@/types';
-import { Plus, Check } from 'lucide-react';
+import { Plus, Check, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface FoodCardProps {
@@ -16,16 +16,22 @@ export default function FoodCard({ food, compact = false }: FoodCardProps) {
   const { addFood } = useTracking();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleAdd = () => {
-    addFood(food.id, quantity);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+  const handleAdd = async () => {
+    setIsSaving(true);
+    const success = await addFood(food.id, quantity);
+    setIsSaving(false);
+
+    if (success) {
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2000);
+    }
   };
 
   if (compact) {
     return (
-      <div className="flex items-center justify-between rounded-xl border border-border bg-card p-3 hover:border-primary/20 transition-colors">
+      <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-3 transition-colors hover:border-primary/20 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-medium text-foreground">
             {lang === 'ar' ? food.nameAr : food.nameEn}
@@ -38,17 +44,18 @@ export default function FoodCard({ food, compact = false }: FoodCardProps) {
           size="sm"
           variant={added ? 'default' : 'outline'}
           onClick={handleAdd}
-          className="gap-1.5"
+          disabled={isSaving}
+          className="w-full gap-1.5 sm:w-auto"
         >
-          {added ? <Check className="size-3.5" /> : <Plus className="size-3.5" />}
-          {added ? t.foods.added : t.foods.add}
+          {isSaving ? <Loader2 className="size-3.5 animate-spin" /> : added ? <Check className="size-3.5" /> : <Plus className="size-3.5" />}
+          {isSaving ? '...' : added ? t.foods.added : t.foods.add}
         </Button>
       </div>
     );
   }
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-5 hover:border-primary/20 transition-all hover:shadow-md">
+    <div className="rounded-2xl border border-border bg-card p-4 transition-all hover:border-primary/20 hover:shadow-md sm:p-5">
       <div className="mb-4">
         <h3 className="font-display text-lg font-semibold text-foreground">
           {lang === 'ar' ? food.nameAr : food.nameEn}
@@ -84,8 +91,8 @@ export default function FoodCard({ food, compact = false }: FoodCardProps) {
         </span>
       </div>
 
-      <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2 rounded-lg border border-input bg-background px-3 py-2">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="flex items-center justify-center gap-2 rounded-lg border border-input bg-background px-3 py-2 sm:justify-start">
           <button
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
             className="text-muted-foreground hover:text-foreground transition-colors"
@@ -104,10 +111,11 @@ export default function FoodCard({ food, compact = false }: FoodCardProps) {
           size="sm"
           variant={added ? 'default' : 'outline'}
           onClick={handleAdd}
-          className="flex-1 gap-1.5"
+          disabled={isSaving}
+          className="w-full gap-1.5 sm:flex-1"
         >
-          {added ? <Check className="size-3.5" /> : <Plus className="size-3.5" />}
-          {added ? t.foods.added : t.foods.add}
+          {isSaving ? <Loader2 className="size-3.5 animate-spin" /> : added ? <Check className="size-3.5" /> : <Plus className="size-3.5" />}
+          {isSaving ? '...' : added ? t.foods.added : t.foods.add}
         </Button>
       </div>
     </div>

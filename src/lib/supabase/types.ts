@@ -172,6 +172,87 @@ export interface Database {
           created_at?: string;
         };
       };
+      water_logs: {
+        Row: {
+          id: string;
+          user_id: string;
+          date: string;
+          amount_ml: number;
+          logged_at: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          date: string;
+          amount_ml: number;
+          logged_at?: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          date?: string;
+          amount_ml?: number;
+          logged_at?: string;
+          created_at?: string;
+        };
+      };
+      daily_notes: {
+        Row: {
+          id: string;
+          user_id: string;
+          date: string;
+          notes: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          date: string;
+          notes: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          date?: string;
+          notes?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      symptom_logs: {
+        Row: {
+          id: string;
+          user_id: string;
+          date: string;
+          symptom_type: string;
+          severity: number;
+          logged_at: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          date: string;
+          symptom_type: string;
+          severity: number;
+          logged_at?: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          date?: string;
+          symptom_type?: string;
+          severity?: number;
+          logged_at?: string;
+          created_at?: string;
+        };
+      };
       reminders: {
         Row: {
           id: string;

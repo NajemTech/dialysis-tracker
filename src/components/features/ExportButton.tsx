@@ -191,7 +191,7 @@ export default function ExportButton({ logs, totals, limits, userName, dateRange
       size="sm"
       onClick={handleExport}
       disabled={isExporting}
-      className="gap-2"
+      className="w-full gap-2 sm:w-auto"
     >
       {isExporting ? (
         <Loader2 className="size-4 animate-spin" />

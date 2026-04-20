@@ -6,6 +6,9 @@ type Profile = Database['public']['Tables']['profiles']['Row'];
 type NutrientLimits = Database['public']['Tables']['nutrient_limits']['Row'];
 type FoodLog = Database['public']['Tables']['food_logs']['Row'];
 type Food = Database['public']['Tables']['foods']['Row'];
+type WaterLog = Database['public']['Tables']['water_logs']['Row'];
+type DailyNote = Database['public']['Tables']['daily_notes']['Row'];
+type SymptomLog = Database['public']['Tables']['symptom_logs']['Row'];
 type Reminder = Database['public']['Tables']['reminders']['Row'];
 
 // Profile Operations
@@ -133,7 +136,7 @@ export async function addFoodLog(userId: string, log: FoodLog['Insert']): Promis
 
   const { data, error } = await supabase
     .from('food_logs')
-    .insert(log)
+    .insert({ ...log, user_id: userId })
     .select()
     .single();
 
@@ -159,6 +162,141 @@ export async function deleteFoodLog(logId: string): Promise<boolean> {
   }
 
   return true;
+}
+
+// Water Logs Operations
+export async function getWaterLogs(userId: string, startDate?: string, endDate?: string): Promise<WaterLog[]> {
+  if (!isSupabaseConfigured()) return [];
+
+  let query = supabase
+    .from('water_logs')
+    .select('*')
+    .eq('user_id', userId)
+    .order('logged_at', { ascending: false });
+
+  if (startDate) {
+    query = query.gte('date', startDate);
+  }
+
+  if (endDate) {
+    query = query.lte('date', endDate);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error('Error fetching water logs:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+export async function addWaterLog(userId: string, log: WaterLog['Insert']): Promise<WaterLog | null> {
+  if (!isSupabaseConfigured()) return null;
+
+  const { data, error } = await supabase
+    .from('water_logs')
+    .insert({ ...log, user_id: userId })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error adding water log:', error);
+    return null;
+  }
+
+  return data;
+}
+
+// Daily Notes Operations
+export async function getDailyNotes(userId: string, startDate?: string, endDate?: string): Promise<DailyNote[]> {
+  if (!isSupabaseConfigured()) return [];
+
+  let query = supabase
+    .from('daily_notes')
+    .select('*')
+    .eq('user_id', userId)
+    .order('date', { ascending: false });
+
+  if (startDate) {
+    query = query.gte('date', startDate);
+  }
+
+  if (endDate) {
+    query = query.lte('date', endDate);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error('Error fetching daily notes:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+export async function upsertDailyNote(userId: string, note: DailyNote['Insert']): Promise<DailyNote | null> {
+  if (!isSupabaseConfigured()) return null;
+
+  const { data, error } = await supabase
+    .from('daily_notes')
+    .upsert({ ...note, user_id: userId, updated_at: new Date().toISOString() }, { onConflict: 'user_id,date' })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error upserting daily note:', error);
+    return null;
+  }
+
+  return data;
+}
+
+// Symptom Logs Operations
+export async function getSymptomLogs(userId: string, startDate?: string, endDate?: string): Promise<SymptomLog[]> {
+  if (!isSupabaseConfigured()) return [];
+
+  let query = supabase
+    .from('symptom_logs')
+    .select('*')
+    .eq('user_id', userId)
+    .order('logged_at', { ascending: false });
+
+  if (startDate) {
+    query = query.gte('date', startDate);
+  }
+
+  if (endDate) {
+    query = query.lte('date', endDate);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error('Error fetching symptom logs:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+export async function addSymptomLog(userId: string, log: SymptomLog['Insert']): Promise<SymptomLog | null> {
+  if (!isSupabaseConfigured()) return null;
+
+  const { data, error } = await supabase
+    .from('symptom_logs')
+    .insert({ ...log, user_id: userId })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error adding symptom log:', error);
+    return null;
+  }
+
+  return data;
 }
 
 // Foods Operations

@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
-import { foodDatabase } from '@/constants/mockData';
+import { useTracking } from '@/hooks/useTracking';
 import FoodCard from '@/components/features/FoodCard';
 import { Search, Apple } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -8,16 +8,17 @@ import { Button } from '@/components/ui/button';
 
 export default function FoodDatabase() {
   const { lang, t } = useLanguage();
+  const { foods } = useTracking();
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
 
   const categories = useMemo(() => {
-    const cats = new Set(foodDatabase.map(f => f.category));
+    const cats = new Set(foods.map(f => f.category));
     return Array.from(cats);
-  }, []);
+  }, [foods]);
 
   const filtered = useMemo(() => {
-    let items = foodDatabase;
+    let items = foods;
     if (activeCategory !== 'all') {
       items = items.filter(f => f.category === activeCategory);
     }
@@ -28,17 +29,17 @@ export default function FoodDatabase() {
       );
     }
     return items;
-  }, [search, activeCategory]);
+  }, [foods, search, activeCategory]);
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div className="mb-8">
+      <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+        <div className="mb-6 sm:mb-8">
           <h1 className="font-display text-2xl font-bold text-foreground sm:text-3xl">
             {t.foods.title}
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {foodDatabase.length} {lang === 'ar' ? 'عنصر غذائي' : 'food items'}
+            {foods.length} {lang === 'ar' ? 'عنصر غذائي' : 'food items'}
           </p>
         </div>
 
@@ -54,12 +55,12 @@ export default function FoodDatabase() {
           </div>
         </div>
 
-        <div className="mb-6 flex flex-wrap gap-2">
+        <div className="mb-6 flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible">
           <Button
             variant={activeCategory === 'all' ? 'default' : 'outline'}
             size="sm"
             onClick={() => setActiveCategory('all')}
-            className="rounded-full"
+            className="shrink-0 rounded-full"
           >
             {t.foods.allCategories}
           </Button>
@@ -69,10 +70,10 @@ export default function FoodDatabase() {
               variant={activeCategory === cat ? 'default' : 'outline'}
               size="sm"
               onClick={() => setActiveCategory(cat)}
-              className="rounded-full"
+              className="shrink-0 rounded-full"
             >
               {lang === 'ar'
-                ? foodDatabase.find(f => f.category === cat)?.categoryAr || cat
+                ? foods.find(f => f.category === cat)?.categoryAr || cat
                 : cat}
             </Button>
           ))}

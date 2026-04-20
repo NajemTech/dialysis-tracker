@@ -18,6 +18,16 @@ export interface TrackedFood {
   servings: number;
   timestamp: string;
   date: string;
+  foodName?: string;
+  foodNameAr?: string;
+  category?: string;
+  categoryAr?: string;
+  servingSize?: string;
+  servingSizeAr?: string;
+  potassium?: number;
+  phosphorus?: number;
+  sodium?: number;
+  protein?: number;
 }
 
 export interface DailyLog {

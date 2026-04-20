@@ -1,8 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useTracking } from '@/hooks/useTracking';
 import {
-  Utensils, BarChart3, Bell, Droplets, Globe2, Heart,
+  Utensils, BarChart3, Bell, Globe2, Heart,
   ArrowRight, ChevronRight, Star, Shield,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -19,7 +19,6 @@ export default function Landing() {
     { icon: Utensils, title: t.landing.feat1Title, desc: t.landing.feat1Desc, color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' },
     { icon: Bell, title: t.landing.feat2Title, desc: t.landing.feat2Desc, color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' },
     { icon: BarChart3, title: t.landing.feat3Title, desc: t.landing.feat3Desc, color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' },
-    { icon: Droplets, title: t.landing.feat4Title, desc: t.landing.feat4Desc, color: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400' },
     { icon: Globe2, title: t.landing.feat5Title, desc: t.landing.feat5Desc, color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400' },
     { icon: Heart, title: t.landing.feat6Title, desc: t.landing.feat6Desc, color: 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400' },
   ];
@@ -35,51 +34,54 @@ export default function Landing() {
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 hidden md:block">
           <img src={heroImg} alt="" className="size-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/70" />
         </div>
-        <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
+        <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
           <div className="max-w-2xl">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-semibold text-primary">
               <Shield className="size-3.5" />
               {lang === 'ar' ? 'مجاني تماماً' : 'Completely Free'}
             </div>
-            <h1 className="font-display text-4xl font-bold leading-tight text-foreground sm:text-5xl lg:text-6xl">
+            <h1 className="font-display text-3xl font-bold leading-tight text-foreground sm:text-5xl lg:text-6xl">
               {t.landing.heroTitle}
             </h1>
-            <p className="mt-6 text-lg leading-relaxed text-muted-foreground sm:text-xl">
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-xl">
               {t.landing.heroSubtitle}
             </p>
-            <div className="mt-10 flex flex-wrap gap-4">
+            <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:gap-4">
               {isLoggedIn ? (
-                <Button size="lg" onClick={() => navigate('/dashboard')} className="gap-2 rounded-xl px-8 text-base">
+                <Button size="lg" onClick={() => navigate('/dashboard')} className="w-full gap-2 rounded-xl px-8 text-base sm:w-auto">
                   {t.nav.dashboard}
                   <ArrowRight className="size-4" />
                 </Button>
               ) : (
                 <>
-                  <Button size="lg" onClick={() => navigate('/login')} className="gap-2 rounded-xl px-8 text-base">
+                  <Button size="lg" onClick={() => navigate('/login')} className="w-full gap-2 rounded-xl px-8 text-base sm:w-auto">
                     {t.landing.heroCta}
                     <ArrowRight className="size-4" />
                   </Button>
-                  <Button variant="outline" size="lg" onClick={() => navigate('/login')} className="rounded-xl px-8 text-base">
+                  <Button variant="outline" size="lg" onClick={() => navigate('/login')} className="w-full rounded-xl px-8 text-base sm:w-auto">
                     {t.landing.heroLogin}
                   </Button>
                 </>
               )}
+            </div>
+            <div className="mt-8 md:hidden">
+              <img src={heroImg} alt="" className="h-64 w-full rounded-3xl object-cover" />
             </div>
           </div>
         </div>
       </section>
 
       {/* How It Works */}
-      <section className="border-y border-border bg-muted/30 py-20">
+      <section className="border-y border-border bg-muted/30 py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-14 text-center font-display text-2xl font-bold text-foreground sm:text-3xl">
+          <h2 className="mb-10 text-center font-display text-2xl font-bold text-foreground sm:mb-14 sm:text-3xl">
             {t.landing.howTitle}
           </h2>
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-4">
             {steps.map((step, i) => (
               <div key={i} className="group relative">
                 <span className="font-display text-5xl font-bold text-primary/10 group-hover:text-primary/20 transition-colors">
@@ -97,9 +99,9 @@ export default function Landing() {
       </section>
 
       {/* Features */}
-      <section className="py-20">
+      <section className="py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-14 text-center font-display text-2xl font-bold text-foreground sm:text-3xl">
+          <h2 className="mb-10 text-center font-display text-2xl font-bold text-foreground sm:mb-14 sm:text-3xl">
             {t.landing.featuresTitle}
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -120,9 +122,9 @@ export default function Landing() {
       </section>
 
       {/* Testimonials */}
-      <section className="border-y border-border bg-muted/30 py-20">
+      <section className="border-y border-border bg-muted/30 py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-14 text-center font-display text-2xl font-bold text-foreground sm:text-3xl">
+          <h2 className="mb-10 text-center font-display text-2xl font-bold text-foreground sm:mb-14 sm:text-3xl">
             {t.landing.testimonialsTitle}
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -152,7 +154,7 @@ export default function Landing() {
       <EmergencyNumbers />
 
       {/* Acknowledgment */}
-      <section className="border-t border-border bg-primary/5 py-16">
+      <section className="border-t border-border bg-primary/5 py-12 sm:py-16">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <div className="mx-auto mb-5 flex size-14 items-center justify-center rounded-full bg-primary/10">
             <Heart className="size-7 text-primary" />

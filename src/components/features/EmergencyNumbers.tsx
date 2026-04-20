@@ -13,9 +13,9 @@ export default function EmergencyNumbers() {
   const { lang } = useLanguage();
 
   return (
-    <section className="border-y border-border bg-destructive/5 py-16">
+    <section className="border-y border-border bg-destructive/5 py-12 sm:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-10 text-center">
+        <div className="mb-8 text-center sm:mb-10">
           <h2 className="font-display text-2xl font-bold text-foreground sm:text-3xl">
             {lang === 'ar' ? 'أرقام الطوارئ' : 'Emergency Numbers'}
           </h2>
