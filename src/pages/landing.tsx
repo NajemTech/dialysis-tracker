@@ -76,7 +76,7 @@ export default function Landing() {
       </section>
 
       {/* How It Works */}
-      <section className="border-y border-border bg-muted/30 py-14 sm:py-20">
+      <section id="how-it-works" className="border-y border-border bg-muted/30 py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="mb-10 text-center font-display text-2xl font-bold text-foreground sm:mb-14 sm:text-3xl">
             {t.landing.howTitle}
@@ -99,7 +99,7 @@ export default function Landing() {
       </section>
 
       {/* Features */}
-      <section className="py-14 sm:py-20">
+      <section id="features" className="py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="mb-10 text-center font-display text-2xl font-bold text-foreground sm:mb-14 sm:text-3xl">
             {t.landing.featuresTitle}
@@ -122,7 +122,7 @@ export default function Landing() {
       </section>
 
       {/* Testimonials */}
-      <section className="border-y border-border bg-muted/30 py-14 sm:py-20">
+      <section id="patient-stories" className="border-y border-border bg-muted/30 py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="mb-10 text-center font-display text-2xl font-bold text-foreground sm:mb-14 sm:text-3xl">
             {t.landing.testimonialsTitle}
@@ -151,7 +151,9 @@ export default function Landing() {
       </section>
 
       {/* Emergency Numbers */}
-      <EmergencyNumbers />
+      <div id="emergency">
+        <EmergencyNumbers />
+      </div>
 
       {/* Acknowledgment */}
       <section className="border-t border-border bg-primary/5 py-12 sm:py-16">

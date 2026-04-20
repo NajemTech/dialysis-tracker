@@ -4,13 +4,13 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { useTracking } from '@/hooks/useTracking';
 import { Activity, Menu, X } from 'lucide-react';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 
 export default function Header() {
   const { lang, t } = useLanguage();
   const { isLoggedIn } = useTracking();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isLanding = location.pathname === '/';
 
   const navItems = [
     { path: '/', label: t.nav.home },
@@ -22,6 +22,21 @@ export default function Header() {
     ] : []),
   ];
 
+  const sectionNavItems = [
+    { id: 'how-it-works', label: 'How It Works' },
+    { id: 'features', label: 'Features' },
+    { id: 'patient-stories', label: 'Patient Stories' },
+    { id: 'emergency', label: 'Emergency Numbers' },
+  ];
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setMobileMenuOpen(false);
+    }
+  };
+
   const isActive = (path: string) => location.pathname === path;
 
   return (
@@ -29,7 +44,7 @@ export default function Header() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5">
+          <Link to="/" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-2.5">
             <div className="flex size-9 items-center justify-center rounded-xl bg-primary">
               <Activity className="size-5 text-primary-foreground" />
             </div>
@@ -37,7 +52,6 @@ export default function Header() {
               {lang === 'ar' ? 'متعقب التغذية' : 'Dialysis Tracker'}
             </span>
           </Link>
-
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
             {navItems.map((item) => (
@@ -53,17 +67,28 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
+            {isLanding && (
+              <>
+                {sectionNavItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className="px-4 py-2 rounded-lg text-sm font-medium transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
+          <button
+            className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-          </Button>
+          </button>
         </div>
 
         {/* Mobile Navigation */}
@@ -83,6 +108,19 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
+            {isLanding && (
+              <>
+                {sectionNavItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className="block w-full text-left px-4 py-2 rounded-lg text-sm font-medium transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </>
+            )}
           </nav>
         )}
       </div>

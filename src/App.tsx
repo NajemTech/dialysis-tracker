@@ -5,6 +5,10 @@ import { TrackingProvider } from '@/hooks/useTracking';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import Layout from '@/components/layout/Layout';
+import ScrollToTop from '@/components/ScrollToTop';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import HomeRedirect from '@/components/HomeRedirect';
 
 const Landing = lazy(() => import('@/pages/landing'));
 const Login = lazy(() => import('@/pages/login'));
@@ -24,20 +28,49 @@ function LoadingFallback() {
 function AppRoutes() {
   return (
     <div className="flex min-h-screen flex-col">
+      <ScrollToTop />
       <Header />
-      <main className="flex-1">
+      <Layout>
         <Suspense fallback={<LoadingFallback />}>
           <Routes>
-            <Route path="/" element={<Landing />} />
+            <Route path="/" element={<HomeRedirect />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/foods" element={<FoodDatabase />} />
-            <Route path="/history" element={<History />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/foods"
+              element={
+                <ProtectedRoute>
+                  <FoodDatabase />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/history"
+              element={
+                <ProtectedRoute>
+                  <History />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              }
+            />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>
-      </main>
+      </Layout>
       <Footer />
       <Toaster />
     </div>
